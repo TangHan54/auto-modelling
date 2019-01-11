@@ -1,6 +1,6 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from classifion import GoClassify
+from auto_modelling.classifion import GoClassify
 from sklearn.metrics import accuracy_score
 
 data = pd.read_csv('data/test.csv')
