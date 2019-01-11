@@ -1,8 +1,8 @@
-# auto-train
+# auto-modelling
 
 This repo is a simple version of parameter tuning.
 
-## reference: https://github.com/EpistasisLab/tpot/blob
+reference: https://github.com/EpistasisLab/tpot/blob
 
 # Quick set-up
 
