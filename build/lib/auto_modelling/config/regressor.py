@@ -2,12 +2,7 @@ import numpy as np
 
 regressor_config_dict = {
 
-    'sklearn.linear_model.ElasticNetCV': {
-        'l1_ratio': np.arange(0.0, 1.01, 0.05),
-        'tol': [1e-5, 1e-4, 1e-3, 1e-2, 1e-1]
-    },
-
-    'sklearn.ensemble.ExtraTreesRegressor': {
+    'ExtraTreesRegressor': {
         'n_estimators': [100],
         'max_features': np.arange(0.05, 1.01, 0.05),
         'min_samples_split': range(2, 21),
@@ -15,7 +10,7 @@ regressor_config_dict = {
         'bootstrap': [True, False]
     },
 
-    'sklearn.ensemble.GradientBoostingRegressor': {
+    'GradientBoostingRegressor': {
         'n_estimators': [100],
         'loss': ["ls", "lad", "huber", "quantile"],
         'learning_rate': [1e-3, 1e-2, 1e-1, 0.5, 1.],
@@ -27,38 +22,25 @@ regressor_config_dict = {
         'alpha': [0.75, 0.8, 0.85, 0.9, 0.95, 0.99]
     },
 
-    'sklearn.ensemble.AdaBoostRegressor': {
+    'AdaBoostRegressor': {
         'n_estimators': [100],
         'learning_rate': [1e-3, 1e-2, 1e-1, 0.5, 1.],
-        'loss': ["linear", "square", "exponential"],
-        'max_depth': range(1, 11)
+        'loss': ["linear", "square", "exponential"]
     },
 
-    'sklearn.tree.DecisionTreeRegressor': {
+    'DecisionTreeRegressor': {
         'max_depth': range(1, 11),
         'min_samples_split': range(2, 21),
         'min_samples_leaf': range(1, 21)
     },
 
-    'sklearn.neighbors.KNeighborsRegressor': {
+    'KNeighborsRegressor': {
         'n_neighbors': range(1, 101),
         'weights': ["uniform", "distance"],
         'p': [1, 2]
     },
 
-    'sklearn.linear_model.LassoLarsCV': {
-        'normalize': [True, False]
-    },
-
-    'sklearn.svm.LinearSVR': {
-        'loss': ["epsilon_insensitive", "squared_epsilon_insensitive"],
-        'dual': [True, False],
-        'tol': [1e-5, 1e-4, 1e-3, 1e-2, 1e-1],
-        'C': [1e-4, 1e-3, 1e-2, 1e-1, 0.5, 1., 5., 10., 15., 20., 25.],
-        'epsilon': [1e-4, 1e-3, 1e-2, 1e-1, 1.]
-    },
-
-    'sklearn.ensemble.RandomForestRegressor': {
+    'RandomForestRegressor': {
         'n_estimators': [100],
         'max_features': np.arange(0.05, 1.01, 0.05),
         'min_samples_split': range(2, 21),
@@ -66,10 +48,7 @@ regressor_config_dict = {
         'bootstrap': [True, False]
     },
 
-    'sklearn.linear_model.RidgeCV': {
-    },
-
-    'xgboost.XGBRegressor': {
+    'XGBRegressor': {
         'n_estimators': [100],
         'max_depth': range(1, 11),
         'learning_rate': [1e-3, 1e-2, 1e-1, 0.5, 1.],
