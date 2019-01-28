@@ -2,3 +2,4 @@ sklearn
 ipython
 numpy
 pandas
+setuptools
