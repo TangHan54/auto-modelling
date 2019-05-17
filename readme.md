@@ -26,6 +26,8 @@ y_pred = best.predict(x_test)
 There is an example `test.py` in the root directory of this package. run
 `python test.py`.
 
+A  `logging.log` file will be created in your project running directory to track the train progress of your model.
+
 # Development Guide
 
 - Clone the repo
