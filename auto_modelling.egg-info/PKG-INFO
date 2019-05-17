@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: auto-modelling
-Version: 1.0.0
+Version: 1.0.2
 Summary: A small package for automatic model training
 Home-page: https://github.com/TangHan54/auto-modelling.git
 Author: Tang Han
@@ -12,7 +12,29 @@ Description: # auto-modelling
         
         reference: https://github.com/EpistasisLab/tpot/blob
         
-        # Quick set-up
+        # Installation
+        
+        `pip install auto-modelling`
+        
+        # Usage Example
+        ```
+        from auto_modelling.classifion import GoClassify
+        from auto_modelling.regression import GoRegress
+        # classification
+        clf = GoClassify()
+        best = clf.train(x_train, y_train)
+        y_pred = best.predict(x_test)
+        
+        # regression
+        reg = GoRegress()
+        best = reg.train(x_train, y_train)
+        y_pred = best.predict(x_test)
+        ```
+        
+        There is an example `test.py` in the root directory of this package. run
+        `python test.py`.
+        
+        # Development Guide
         
         - Clone the repo
         
@@ -22,14 +44,14 @@ Description: # auto-modelling
         workon auto-train
         pip install requirements.txt
         ```
-        install `xgboost` 
+        if you have issues in installing `xgboost` 
         refrence: 
         https://xgboost.readthedocs.io/en/latest/build.html#
         https://www.ibm.com/developerworks/community/blogs/jfp/entry/Installing_XGBoost_on_Mac_OSX?lang=en
         
         # Note
         
-        - TO DO: Feature selection, pre-processing
+        - TO DO: Feature selection, pre-processing, evaluation metricss
         
         # Thoughts
         
@@ -50,6 +72,10 @@ Description: # auto-modelling
             - tuning parameters and model selection
             - feature selection
             - return a model with parameters, columns and a script to process x_test 
+        
+        # Other reference
+        
+        [Packaging your project](https://packaging.python.org/tutorials/packaging-projects/)
 Platform: UNKNOWN
 Classifier: Programming Language :: Python :: 3
 Classifier: License :: OSI Approved :: MIT License

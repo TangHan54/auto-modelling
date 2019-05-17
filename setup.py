@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="auto_modelling",
-    version="1.0.0",
+    version="1.0.2",
     author="Tang Han",
     author_email="aloofness54@gmail.com",
     description="A small package for automatic model training",
@@ -13,6 +13,14 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/TangHan54/auto-modelling.git",
     packages=setuptools.find_packages(),
+    install_requires=[
+        'sklearn',
+        'ipython',
+        'numpy',
+        'pandas',
+        'setuptools',
+        'xgboost'
+    ],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",

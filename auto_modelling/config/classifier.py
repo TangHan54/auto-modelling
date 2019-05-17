@@ -34,6 +34,7 @@ classifier_config_dict = {
     'LogisticRegression': {
         'penalty': ["l1", "l2"],
         'C': [1e-4, 1e-3, 1e-2, 1e-1, 0.5, 1., 5., 10., 15., 20., 25.],
+        'solver':['liblinear']
     },
 
     'XGBClassifier': {

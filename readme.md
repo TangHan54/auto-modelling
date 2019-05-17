@@ -4,7 +4,29 @@ This repo is a simple version of parameter tuning.
 
 reference: https://github.com/EpistasisLab/tpot/blob
 
-# Quick set-up
+# Installation
+
+`pip install auto-modelling`
+
+# Usage Example
+```
+from auto_modelling.classifion import GoClassify
+from auto_modelling.regression import GoRegress
+# classification
+clf = GoClassify()
+best = clf.train(x_train, y_train)
+y_pred = best.predict(x_test)
+
+# regression
+reg = GoRegress()
+best = reg.train(x_train, y_train)
+y_pred = best.predict(x_test)
+```
+
+There is an example `test.py` in the root directory of this package. run
+`python test.py`.
+
+# Development Guide
 
 - Clone the repo
 
@@ -14,14 +36,14 @@ mkvirtualenv auto-train
 workon auto-train
 pip install requirements.txt
 ```
-install `xgboost` 
+if you have issues in installing `xgboost` 
 refrence: 
 https://xgboost.readthedocs.io/en/latest/build.html#
 https://www.ibm.com/developerworks/community/blogs/jfp/entry/Installing_XGBoost_on_Mac_OSX?lang=en
 
 # Note
 
-- TO DO: Feature selection, pre-processing
+- TO DO: Feature selection, pre-processing, evaluation metricss
 
 # Thoughts
 
@@ -42,3 +64,7 @@ https://www.ibm.com/developerworks/community/blogs/jfp/entry/Installing_XGBoost_
     - tuning parameters and model selection
     - feature selection
     - return a model with parameters, columns and a script to process x_test 
+
+# Other reference
+
+[Packaging your project](https://packaging.python.org/tutorials/packaging-projects/)
