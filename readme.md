@@ -1,6 +1,27 @@
 # auto-modelling
 
-This repo is a simple version of parameter tuning.
+Auto-modelling is a convenient library to train and tune machine models automatically.
+
+Its main features include the following:
+
+1. preprocessing columns in all datatypes. (numeric, categorical, text)
+2. train machine models and tune parameters automatically.
+3. return the best model with optimized parameters.
+
+The machine learning models include the following:
+- Classification:
+    - ExtraTreesClassifier
+    - RandomForestClassifier
+    - KNeighborsClassifier
+    - LogisticRegression
+    - XGBClassifier
+- Regression:
+    - ExtraTreesRegressor
+    - GradientBoostingRegressor
+    - AdaBoostRegressor
+    - DecisionTreeRegressor
+    - RandomForestRegressor
+    - XGBRegressor
 
 reference: https://github.com/EpistasisLab/tpot/blob
 
@@ -12,6 +33,13 @@ reference: https://github.com/EpistasisLab/tpot/blob
 ```
 from auto_modelling.classifion import GoClassify
 from auto_modelling.regression import GoRegress
+from auto_modelling.preprocess import DataManager
+
+# preprocessing data
+dm = DataManager()
+train, test = dm.drop_sparse_columns(x_train, x_test)
+train, test = dm.process_data(x_train, x_test)
+
 # classification
 clf = GoClassify()
 best = clf.train(x_train, y_train)
@@ -25,8 +53,6 @@ y_pred = best.predict(x_test)
 
 There is an example `test.py` in the root directory of this package. run
 `python test.py`.
-
-A  `logging.log` file will be created in your project running directory to track the train progress of your model.
 
 # Development Guide
 
@@ -49,13 +75,13 @@ https://www.ibm.com/developerworks/community/blogs/jfp/entry/Installing_XGBoost_
 
 # Thoughts
 
-- Ideally, any dataframe being throw into this repo, it should be 
+- Ideally, any dataframe being throw into this repo, it should be processed.
 
 1. pre-processing 
 
-    - drop column that have too many null
-    - fill na for both numeric and non-numeric values
-    - encoded for non-numeric values
+    - drop column that have too many null(Done)
+    - fill na for both numeric and non-numeric values(Done)
+    - encoded for non-numeric values(Done)
     - scale values if needed
     - balance the dataset if needed
 
@@ -67,6 +93,7 @@ https://www.ibm.com/developerworks/community/blogs/jfp/entry/Installing_XGBoost_
     - feature selection
     - return a model with parameters, columns and a script to process x_test 
 
+3. model-evualation
 # Other reference
 
 [Packaging your project](https://packaging.python.org/tutorials/packaging-projects/)
