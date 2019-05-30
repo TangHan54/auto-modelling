@@ -12,7 +12,7 @@ from sklearn.model_selection import RandomizedSearchCV
 from .config import regressor
 import logging
 
-logging.basicConfig(filename='logging.log', filemode='w', level=logging.INFO)
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
@@ -28,6 +28,7 @@ class GoRegress:
         logger.info("Starting to train models")
         best_parameters = {}
         for estimator in self.regressor_config_dict:
+            logger.info(f"Starting to train with {estimator}")
             param_grid = self.regressor_config_dict[estimator]
             mdl = eval(estimator)()
             clf = RandomizedSearchCV(mdl, param_grid, n_jobs=self.n_jobs, cv=self.cv, scoring=self.scoring)

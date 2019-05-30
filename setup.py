@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="auto_modelling",
-    version="1.0.2",
+    version="1.1.0",
     author="Tang Han",
     author_email="aloofness54@gmail.com",
     description="A small package for automatic model training",

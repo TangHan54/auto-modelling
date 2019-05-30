@@ -11,7 +11,7 @@ from sklearn.model_selection import RandomizedSearchCV
 from .config import classifier
 import logging
 
-logging.basicConfig(filename='logging.log', filemode='w', level=logging.INFO)
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 class GoClassify:
