@@ -47,7 +47,8 @@ class DataManager:
         object_columns = list(train.select_dtypes(include=['bool','object']))
         for col in object_columns:
             # check if it's a boolean column after drop all null values
-            if train[col].dropna().apply(isinstance,args = [bool]).all():
+            # if train[col].dropna().apply(isinstance,args = [bool]).all():
+            if isinstance(train[col].dropna().iloc[0], bool):
                 logger.info(f'dealing with bool column {col}...')
                 train[col] = train[col].fillna(False)
                 if isinstance(test, pd.DataFrame):
@@ -65,7 +66,7 @@ class DataManager:
             # check whether it's a text column
             if (len(train[col].unique()) >= 100) or ((len(train[col].unique()) >= len(train)/3) and (len(train) > 30)):
                 logger.info(f'dealing with text column {col}...')
-                ttf = TfidfVectorizer(stop_words='english',max_features=1000,ngram_range=(1,2))
+                ttf = TfidfVectorizer(stop_words='english',max_features=100,ngram_range=(1,2))
                 train_object_features = hstack([train_object_features, ttf.fit_transform(train[col])])
                 if isinstance(test, pd.DataFrame):
                     test_object_features = hstack([test_object_features, ttf.transform(test[col])])

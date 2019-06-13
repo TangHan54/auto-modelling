@@ -10,6 +10,7 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.model_selection import RandomizedSearchCV
 
 from .config import regressor
+from heapq import nlargest
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -17,12 +18,19 @@ logger = logging.getLogger(__name__)
 
 
 class GoRegress:
-    """"""
-    def __init__(self, n_jobs=-1, cv=3, scoring='neg_mean_squared_error'):
+    
+    def __init__(self, n_jobs=-1, cv=3, scoring='neg_mean_squared_error', n_best=1):
+        """
+        n_best: integer. Return the top n best models.
+        """
+        assert isinstance(n_best,int), 'n_best must be an integer'
+        assert n_best > 0, 'n_best must be a positive integer'
+
         self.regressor_config_dict = regressor.regressor_config_dict
         self.n_jobs = n_jobs
         self.cv = cv
         self.scoring = scoring
+        self.n_best = n_best
 
     def train(self, x_train, y_train):
         logger.info("Starting to train models")
@@ -38,5 +46,9 @@ class GoRegress:
             logger.info(f"The current best result is {max(best_parameters.values())}")
             logger.info(f"with {max(best_parameters, key=best_parameters.get)}")
             logger.info("==============================================")
-        best = max(best_parameters, key=best_parameters.get)
+        if self.n_best > 1:
+            bests = nlargest(self.n_best, best_parameters, key=best_parameters.get)
+            return bests
+        else:
+            best = max(best_parameters, key=best_parameters.get)
         return best

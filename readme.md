@@ -6,7 +6,8 @@ Its main features include the following:
 
 1. preprocessing columns in all datatypes. (numeric, categorical, text)
 2. train machine models and tune parameters automatically.
-3. return the best model with optimized parameters.
+3. return top n best models with optimized parameters.
+4. Apply **stacking** technique to combine the n best models returned by the repo or self-determined fitted models together to get an even better result.
 
 The machine learning models include the following:
 - Classification:
@@ -22,6 +23,9 @@ The machine learning models include the following:
     - DecisionTreeRegressor
     - RandomForestRegressor
     - XGBRegressor
+- Stack:
+    - for classify: LogisticRegression
+    - for regression: LinearRegression
 
 reference: https://github.com/EpistasisLab/tpot/blob
 
@@ -34,6 +38,7 @@ reference: https://github.com/EpistasisLab/tpot/blob
 from auto_modelling.classifion import GoClassify
 from auto_modelling.regression import GoRegress
 from auto_modelling.preprocess import DataManager
+from auto_modelling.stack import Stack
 
 # preprocessing data
 dm = DataManager()
@@ -41,18 +46,27 @@ train, test = dm.drop_sparse_columns(x_train, x_test)
 train, test = dm.process_data(x_train, x_test)
 
 # classification
-clf = GoClassify()
+clf = GoClassify(n_best=1)
 best = clf.train(x_train, y_train)
 y_pred = best.predict(x_test)
 
 # regression
-reg = GoRegress()
+reg = GoRegress(n_best=1)
 best = reg.train(x_train, y_train)
 y_pred = best.predict(x_test)
+
+# get top 3 best models
+clf = GoClassify(n_best=3)
+bests = clf.train(x_train, y_train)
+y_preds = [m.predict(x_test) for m in bests]
+
+# Stack top 3 best models
+stack = Stack(n_models = 3)
+level_0_models, level_1_model = stack.train(x_train, y_train, x_test, y_test)
 ```
 
-There is an example `test.py` in the root directory of this package. run
-`python test.py`.
+There are examples `test.py` and `sample.py` in the root directory of this package. run
+`python test.py`/`python sample.py`.
 
 # Development Guide
 
@@ -60,8 +74,8 @@ There is an example `test.py` in the root directory of this package. run
 
 - Create the virtual environment
 ```
-mkvirtualenv auto-train
-workon auto-train
+mkvirtualenv auto
+workon auto
 pip install requirements.txt
 ```
 if you have issues in installing `xgboost` 
@@ -89,9 +103,10 @@ https://www.ibm.com/developerworks/community/blogs/jfp/entry/Installing_XGBoost_
 
     - mode = `classification`, `regression`, `auto`
     - split data-set
-    - tuning parameters and model selection
+    - tuning parameters and model selection (Done)
     - feature selection
-    - return a model with parameters, columns and a script to process x_test 
+    - return a model with parameters, columns and a script to process x_test
+    - stacking with customized fitted models (Done)
 
 3. model-evualation
 # Other reference
