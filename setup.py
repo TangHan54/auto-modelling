@@ -5,10 +5,10 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="auto_modelling",
-    version="1.1.0",
+    version="1.2.0",
     author="Tang Han",
     author_email="aloofness54@gmail.com",
-    description="A small package for automatic model training",
+    description="A light package for automatic model tuning and stacking",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/TangHan54/auto-modelling.git",

@@ -3,6 +3,7 @@ auto_modelling/__init__.py
 auto_modelling/classifion.py
 auto_modelling/preprocess.py
 auto_modelling/regression.py
+auto_modelling/stack.py
 auto_modelling.egg-info/PKG-INFO
 auto_modelling.egg-info/SOURCES.txt
 auto_modelling.egg-info/dependency_links.txt
