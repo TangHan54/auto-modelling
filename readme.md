@@ -35,7 +35,7 @@ reference: https://github.com/EpistasisLab/tpot/blob
 
 # Usage Example
 ```
-from auto_modelling.classifion import GoClassify
+from auto_modelling.classification import GoClassify
 from auto_modelling.regression import GoRegress
 from auto_modelling.preprocess import DataManager
 from auto_modelling.stack import Stack

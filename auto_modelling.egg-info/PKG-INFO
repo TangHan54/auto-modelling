@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: auto-modelling
-Version: 1.2.0
+Version: 1.2.1
 Summary: A light package for automatic model tuning and stacking
 Home-page: https://github.com/TangHan54/auto-modelling.git
 Author: Tang Han
@@ -43,7 +43,7 @@ Description: # auto-modelling
         
         # Usage Example
         ```
-        from auto_modelling.classifion import GoClassify
+        from auto_modelling.classification import GoClassify
         from auto_modelling.regression import GoRegress
         from auto_modelling.preprocess import DataManager
         from auto_modelling.stack import Stack

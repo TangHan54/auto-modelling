@@ -1,6 +1,6 @@
 setup.py
 auto_modelling/__init__.py
-auto_modelling/classifion.py
+auto_modelling/classification.py
 auto_modelling/preprocess.py
 auto_modelling/regression.py
 auto_modelling/stack.py

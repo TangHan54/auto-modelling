@@ -1,6 +1,6 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from auto_modelling.classifion import GoClassify
+from auto_modelling.classification import GoClassify
 from auto_modelling.regression import GoRegress
 from auto_modelling.preprocess import DataManager
 from auto_modelling.stack import Stack
