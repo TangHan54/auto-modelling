@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="auto_modelling",
-    version="1.2.1",
+    version="1.2.2",
     author="Tang Han",
     author_email="aloofness54@gmail.com",
     description="A light package for automatic model tuning and stacking",
@@ -19,7 +19,8 @@ setuptools.setup(
         'numpy',
         'pandas',
         'setuptools',
-        'xgboost'
+        'xgboost',
+        'joblib'
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

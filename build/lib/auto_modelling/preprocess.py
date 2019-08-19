@@ -8,6 +8,9 @@ This script aims to process data if needed.
 3. encode for categorical columns
 4. vectorize for text columns
 """
+import os
+import json
+import joblib
 import pandas as pd
 import logging
 from scipy.sparse import hstack, csr_matrix
@@ -16,10 +19,14 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 
 logger = logging.getLogger(__name__)
 
+
 class DataManager:
 
-    def __init__(self):
-        pass
+    def __init__(self, directory='data_process_tools'):
+        self.directory = directory
+        if not os.path.exists(f'{self.directory}'):
+            os.mkdir(f'{self.directory}')
+        
     
     def drop_sparse_columns(self, train, test=None):
         """drop columns that have too many null values"""
@@ -37,10 +44,12 @@ class DataManager:
         # 1. numeric 
         logger.info('dealing with numeric columns...')
         numeric_columns = list(train.select_dtypes(include='number'))
-        train[numeric_columns] = train[numeric_columns].fillna(train[numeric_columns].median())
+        values = train[numeric_columns].median()
+        fill_values = {i:j for (i,j) in zip(numeric_columns, list(values))}
+        train[numeric_columns] = train[numeric_columns].fillna(values)
         train_nc = csr_matrix(train[numeric_columns].values)
         if isinstance(test, pd.DataFrame):
-            test[numeric_columns] = test[numeric_columns].fillna(train[numeric_columns].median())
+            test[numeric_columns] = test[numeric_columns].fillna(values)
             test_nc = csr_matrix(test[numeric_columns].values)
 
         # 2. categorical and bool 
@@ -51,13 +60,16 @@ class DataManager:
             if isinstance(train[col].dropna().iloc[0], bool):
                 logger.info(f'dealing with bool column {col}...')
                 train[col] = train[col].fillna(False)
+                fill_values[col] = False
                 if isinstance(test, pd.DataFrame):
                     test[col] = test[col].fillna(False)
             else:
                 logger.info(f'dealing with object column {col}...')
-                train[col] = train[col].fillna(train[col].mode()[0])
+                value = train[col].mode()[0]
+                fill_values[col] = value
+                train[col] = train[col].fillna(value)
                 if isinstance(test, pd.DataFrame):
-                    test[col] = test[col].fillna(train[col].mode()[0])
+                    test[col] = test[col].fillna(value)
             
             train_object_features = csr_matrix(([], ([], [])), shape=(len(train), 0))
             if isinstance(test, pd.DataFrame):
@@ -66,16 +78,27 @@ class DataManager:
             # check whether it's a text column
             if (len(train[col].unique()) >= 100) or ((len(train[col].unique()) >= len(train)/3) and (len(train) > 30)):
                 logger.info(f'dealing with text column {col}...')
+                fill_values[col] = ''
                 ttf = TfidfVectorizer(stop_words='english',max_features=100,ngram_range=(1,2))
                 train_object_features = hstack([train_object_features, ttf.fit_transform(train[col])])
                 if isinstance(test, pd.DataFrame):
                     test_object_features = hstack([test_object_features, ttf.transform(test[col])])
+                # dump text encoders
+                f = f'{self.directory}/{col}_encoder.joblib'
+                joblib.dump(ttf, f)
             else:
                 encoder = OneHotEncoder()
                 logger.info(f'dealing with categorical column {col}...')
                 train_object_features = hstack([train_object_features, encoder.fit_transform(train[[col]])])
                 if isinstance(test, pd.DataFrame):
                     test_object_features = hstack([test_object_features, encoder.fit_transform(test[[col]])])
+                # dump category encoder
+                f = f'{self.directory}/{col}_encoder.joblib'
+                joblib.dump(encoder, f)
+
+        # dump fill_na values
+        f=  f'{self.directory}/fill_values.joblib'
+        joblib.dump(fill_values, f)
 
         train = hstack([train_nc, train_object_features]).tocsr()
         if isinstance(test, pd.DataFrame):
