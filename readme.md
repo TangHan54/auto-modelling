@@ -41,9 +41,10 @@ from auto_modelling.preprocess import DataManager
 from auto_modelling.stack import Stack
 
 # preprocessing data
-dm = DataManager()
+dm = DataManager(directory = 'preprocess_tools')
 train, test = dm.drop_sparse_columns(x_train, x_test)
 train, test = dm.process_data(x_train, x_test)
+# the encoders are stored in the directory called preprocess_tools.
 
 # classification
 clf = GoClassify(n_best=1)
@@ -85,7 +86,7 @@ https://www.ibm.com/developerworks/community/blogs/jfp/entry/Installing_XGBoost_
 
 # Note
 
-- TO DO: Feature selection, pre-processing, evaluation metricss
+- TO DO: Feature selection, evaluation metricss
 
 # Thoughts
 
