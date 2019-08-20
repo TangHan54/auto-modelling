@@ -102,7 +102,7 @@ https://www.ibm.com/developerworks/community/blogs/jfp/entry/Installing_XGBoost_
 
 2. model-training
 
-    - mode = `classification`, `regression`, `auto`
+    - mode = `classification`, `regression`, `auto`(Done)
     - split data-set
     - tuning parameters and model selection (Done)
     - feature selection

@@ -1,6 +1,7 @@
 import joblib
 import pandas as pd
 import logging
+import collections
 
 from auto_modelling.classifion import GoClassify
 from auto_modelling.regression import GoRegress
@@ -15,22 +16,30 @@ class Stack:
 
     def __init__(self, mode='classify', n_models=3):
         """
-        mode: str. 'classsify' or 'regression'.
+        mode: str. 'classsify' or 'regression' or 'auto'.
         n_models: int. number of models used to stack.
         """
         self.mode = mode
+        assert self.mode in ['classify','regression','auto'],'Please input a valid mode.'
         self.n_models = n_models
 
     def train(self, x_train, x_test, y_train, y_test, customized_models=[]):
+        if self.mode == 'auto':
+            y_temp = collections.Counter(y_train).keys()
+            if all(map(lambda x: isinstance(x,float) or isinstance(x,int), y_temp)) and len(y_temp)/len(y_train) > 0.5: 
+                self.mode = 'regression'
+            else:
+                self.mode = 'classify'
+
         if self.mode == 'classify':
             model = GoClassify(n_best=self.n_models)
             stack_model = LogisticRegression(n_jobs=-1)
             metric = accuracy_score
-        else:
+        elif self.mode == 'regression':
             model = GoRegress(n_best=self.n_models)
             stack_model = LinearRegression(n_jobs=-1)
             metric = mean_squared_error
-
+        
         bests = model.train(x_train, y_train) + customized_models
         y_preds = [m.predict(x_test) for m in bests]
         y_preds = pd.DataFrame(y_preds).T

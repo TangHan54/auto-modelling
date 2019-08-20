@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: auto-modelling
-Version: 1.2.2
+Version: 1.2.3
 Summary: A light package for automatic model tuning and stacking
 Home-page: https://github.com/TangHan54/auto-modelling.git
 Author: Tang Han
@@ -110,7 +110,7 @@ Description: # auto-modelling
         
         2. model-training
         
-            - mode = `classification`, `regression`, `auto`
+            - mode = `classification`, `regression`, `auto`(IP)
             - split data-set
             - tuning parameters and model selection (Done)
             - feature selection
