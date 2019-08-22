@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: auto-modelling
-Version: 1.2.4
+Version: 1.2.5
 Summary: A light package for automatic model tuning and stacking
 Home-page: https://github.com/TangHan54/auto-modelling.git
 Author: Tang Han

@@ -40,7 +40,8 @@ class DataManager:
     def process_data(self, train, test=None):
         # fill na and encode
         # 1. numeric 
-        shutil.rmtree(self.directory)
+        if os.path.exists(self.directory):
+            shutil.rmtree(self.directory)
         os.mkdir(self.directory)
 
         logger.info('dealing with numeric columns...')
