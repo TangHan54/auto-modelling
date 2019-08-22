@@ -44,7 +44,11 @@ from auto_modelling.stack import Stack
 dm = DataManager(directory = 'preprocess_tools')
 train, test = dm.drop_sparse_columns(x_train, x_test)
 train, test = dm.process_data(x_train, x_test)
-# the encoders are stored in the directory called preprocess_tools.
+# the encoders are stored in the directory called data_process_tools.
+
+# use the same processing tools to process new data
+predict_data = dm.process_predict_data(predict_x)
+# predict_x should have the same format as x_train/x_test
 
 # classification
 clf = GoClassify(n_best=1)
@@ -106,7 +110,7 @@ https://www.ibm.com/developerworks/community/blogs/jfp/entry/Installing_XGBoost_
     - split data-set
     - tuning parameters and model selection (Done)
     - feature selection
-    - return a model with parameters, columns and a script to process x_test
+    - return a model with parameters, columns and a script to process x_test(Done)
     - stacking with customized fitted models (Done)
 
 3. model-evualation
