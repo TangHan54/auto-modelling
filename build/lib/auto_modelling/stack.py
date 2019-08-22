@@ -3,7 +3,7 @@ import pandas as pd
 import logging
 import collections
 
-from auto_modelling.classifion import GoClassify
+from auto_modelling.classification import GoClassify
 from auto_modelling.regression import GoRegress
 from sklearn.linear_model import LogisticRegression, LinearRegression
 from sklearn.model_selection import train_test_split

@@ -6,7 +6,7 @@ from auto_modelling.preprocess import DataManager
 from sklearn.metrics import accuracy_score, mean_squared_error
 import logging
 
-data = pd.read_csv('data/clean_test_data.csv')
+data = pd.read_csv('data/train2.csv')
 
 y = data['y']
 X = data.drop('y', axis = 1)
@@ -19,6 +19,8 @@ x_train, x_test, y_train, y_test = train_test_split(
 dm = DataManager()
 train, test = dm.drop_sparse_columns(x_train, x_test)
 train, test = dm.process_data(x_train, x_test)
+
+new_X = dm.process_predict_data(X)
 
 # clf = GoClassify()
 # best = clf.train(x_train, y_train)

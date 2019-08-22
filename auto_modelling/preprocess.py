@@ -10,6 +10,7 @@ This script aims to process data if needed.
 """
 import os
 import json
+import shutil
 import joblib
 import pandas as pd
 import logging
@@ -24,10 +25,7 @@ class DataManager:
 
     def __init__(self, directory='data_process_tools'):
         self.directory = directory
-        if not os.path.exists(f'{self.directory}'):
-            os.mkdir(f'{self.directory}')
         
-    
     def drop_sparse_columns(self, train, test=None):
         """drop columns that have too many null values"""
         
@@ -42,8 +40,13 @@ class DataManager:
     def process_data(self, train, test=None):
         # fill na and encode
         # 1. numeric 
+        shutil.rmtree(self.directory)
+        os.mkdir(self.directory)
+
         logger.info('dealing with numeric columns...')
+        columns = {}
         numeric_columns = list(train.select_dtypes(include='number'))
+        columns['numeric_columns'] = numeric_columns
         values = train[numeric_columns].median()
         fill_values = {i:j for (i,j) in zip(numeric_columns, list(values))}
         train[numeric_columns] = train[numeric_columns].fillna(values)
@@ -54,6 +57,7 @@ class DataManager:
 
         # 2. categorical and bool 
         object_columns = list(train.select_dtypes(include=['bool','object']))
+        text_column = []
         for col in object_columns:
             # check if it's a boolean column after drop all null values
             # if train[col].dropna().apply(isinstance,args = [bool]).all():
@@ -86,16 +90,24 @@ class DataManager:
                 # dump text encoders
                 f = f'{self.directory}/{col}_encoder.joblib'
                 joblib.dump(ttf, f)
-            else:
-                encoder = OneHotEncoder()
-                logger.info(f'dealing with categorical column {col}...')
-                train_object_features = hstack([train_object_features, encoder.fit_transform(train[[col]])])
-                if isinstance(test, pd.DataFrame):
-                    test_object_features = hstack([test_object_features, encoder.fit_transform(test[[col]])])
-                # dump category encoder
-                f = f'{self.directory}/{col}_encoder.joblib'
-                joblib.dump(encoder, f)
+                text_column.append(col)
+                object_columns.remove(col)
+        columns['text_columns'] = text_column
 
+        if len(object_columns) > 0:
+            encoder = OneHotEncoder()
+            logger.info(f'dealing with categorical column {col}...')
+            train_object_features = hstack([train_object_features, encoder.fit_transform(train[object_columns])])
+            if isinstance(test, pd.DataFrame):
+                test_object_features = hstack([test_object_features, encoder.transform(test[object_columns])])
+            # dump category encoder
+            f = f'{self.directory}/one_hot_encoder.joblib'
+            joblib.dump(encoder, f)
+            columns['object_columns'] = object_columns
+
+        # dump columns names 
+        f = f'{self.directory}/columns.joblib'
+        joblib.dump(columns, f)
         # dump fill_na values
         f=  f'{self.directory}/fill_values.joblib'
         joblib.dump(fill_values, f)
@@ -107,8 +119,32 @@ class DataManager:
         else:
             return train
 
+    def process_predict_data(self, df):
+        assert os.path.exists(self.directory), 'Choose the correct directory tools stored.'
+        columns_path = f'{self.directory}/columns.joblib'
+        assert os.path.exists(columns_path), 'There is no record of required columns.'
+        fill_values_path = f'{self.directory}/fill_values.joblib'
+        assert os.path.exists(fill_values_path), 'There is no record of fillna values.'
 
+        columns = joblib.load(columns_path)
+        fill_values = joblib.load(fill_values_path)
+
+        df = df.fillna(fill_values)
         
+        predict_nc = csr_matrix(df[columns['numeric_columns']].values)
+        predict_obj_features = csr_matrix(([], ([], [])), shape=(len(df), 0))
+        for col in columns['text_columns']:
+            f = f'{self.directory}/{col}_encoder.joblib'
+            encoder = joblib.load(f)
+            predict_obj_features = hstack([predict_obj_features, encoder.transform(df[col])])
+
+        if 'object_columns' in columns.keys():
+            f = f'{self.directory}/one_hot_encoder.joblib'
+            encoder = joblib.load(f)
+            predict_obj_features = hstack([predict_obj_features, encoder.transform(df[columns['object_columns']])])
+        
+        return hstack([predict_nc, predict_obj_features]).tocsr()
+
 
     
 
