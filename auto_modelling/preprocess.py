@@ -129,7 +129,11 @@ class DataManager:
 
         columns = joblib.load(columns_path)
         fill_values = joblib.load(fill_values_path)
-
+        # in case some columns were missed.
+        all_columns = []
+        for key in columns.keys():
+            all_columns += columns[key]
+        df = df.reindex(columns=all_columns)
         df = df.fillna(fill_values)
         
         predict_nc = csr_matrix(df[columns['numeric_columns']].values)
