@@ -84,7 +84,7 @@ workon auto
 pip install requirements.txt
 ```
 if you have issues in installing `xgboost` 
-refrence: 
+reference: 
 https://xgboost.readthedocs.io/en/latest/build.html#
 https://www.ibm.com/developerworks/community/blogs/jfp/entry/Installing_XGBoost_on_Mac_OSX?lang=en
 
@@ -113,7 +113,7 @@ https://www.ibm.com/developerworks/community/blogs/jfp/entry/Installing_XGBoost_
     - return a model with parameters, columns and a script to process x_test(Done)
     - stacking with customized fitted models (Done)
 
-3. model-evualation
+3. model-evaluation
 # Other reference
 
 [Packaging your project](https://packaging.python.org/tutorials/packaging-projects/)
